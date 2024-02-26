@@ -23,6 +23,6 @@ const tasks = [
 
   for (const task of tasks){
     tasksList.innerHTML += `
-    <li><input type="checkbox">${task.name}</li>
+    <li class="task"><input type="checkbox">${task.name}</li>
     `
   }
