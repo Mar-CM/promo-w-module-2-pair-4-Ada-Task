@@ -22,7 +22,13 @@ const tasks = [
   ];
 
   for (const task of tasks){
+    const taskInput = `<input id="${task.name}" type="checkbox">`;
+    
     tasksList.innerHTML += `
-    <li class="task"><input type="checkbox">${task.name}</li>
+    <li class="task">${taskInput}${task.name}</li>
     `
+
+    if(task.completed === true){
+      checkbox.checked
+    }
   }
