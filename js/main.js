@@ -61,6 +61,8 @@ const handleClickCheckbox = (event) => {
   })
   
   tasks[indexTask].completed = event.target.checked;
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+
   renderTask();
 }
 
