@@ -24,31 +24,32 @@ const renderTask = () => {
 }
 }
 
-// if (tasksLocalStorage !== null) {
-//   renderTask();
-// } else {
-//   //sino existe el listado de tareas en el local storage
-//   // pide los datos al servidor
-//   fetch(SERVER_URL)
-//     .then((response) => response.json())
-//     .then((data) => {
-//       //guarda el listado obtenido en el Local Storage
-//       // pinta la lista de tareas
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// }
+if (tasksLocalStorage !== null) {
+  tasks = tasksLocalStorage
+  renderTask();
+} else {
+  
+  fetch(SERVER_URL)
+    .then((response) => response.json())
+    .then((data) => {
+      tasks = data.results;
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTask();
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
-fetch(SERVER_URL)
-  .then((response) => response.json())
-  .then ((data) => {
-    // console.log(data)
+// fetch(SERVER_URL)
+//   .then((response) => response.json())
+//   .then ((data) => {
+//     // console.log(data)
 
-    tasks = data.results; // Estamos llamando al objeto al array del objeto que contiene la info que se llama results 
+//     tasks = data.results; // Estamos llamando al objeto al array del objeto que contiene la info que se llama results 
 
-    renderTask();
-});
+//     renderTask();
+// });
 
 
 
@@ -66,7 +67,7 @@ const handleClickCheckbox = (event) => {
 tasksList.addEventListener('click', handleClickCheckbox);
 
 //AGREGAR NUEVA TAREA
-let id = 170 
+let id = 0
 const handleNewTask = (event) => {
   event.preventDefault();
   const newTask = {
@@ -75,6 +76,8 @@ const handleNewTask = (event) => {
     completed: false,
   }
   tasks.push(newTask);
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+
   renderTask();
 }
 
