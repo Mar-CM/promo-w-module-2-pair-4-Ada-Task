@@ -6,10 +6,12 @@ const newTaskBtn = document.querySelector('.js-new-task-btn');
 
 const GITHUB_USER = 'Mar-CM';
 const SERVER_URL = `https://dev.adalab.es/api/todo/${GITHUB_USER}`;
+const tasksLocalStorage = JSON.parse(localStorage.getItem("tasks"));
 
 let tasks = [];
 
 const renderTask = () => {
+  tasksList.innerHTML = ''; 
   for (const task of tasks){
     if(task.completed === true){
     tasksList.innerHTML += `
@@ -21,6 +23,22 @@ const renderTask = () => {
     }
 }
 }
+
+// if (tasksLocalStorage !== null) {
+//   renderTask();
+// } else {
+//   //sino existe el listado de tareas en el local storage
+//   // pide los datos al servidor
+//   fetch(SERVER_URL)
+//     .then((response) => response.json())
+//     .then((data) => {
+//       //guarda el listado obtenido en el Local Storage
+//       // pinta la lista de tareas
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     });
+// }
 
 fetch(SERVER_URL)
   .then((response) => response.json())
@@ -35,25 +53,31 @@ fetch(SERVER_URL)
 
 
 const handleClickCheckbox = (event) => {
-  const inputId = event.target.id
-  console.log(tasks);
-  const taskIndex = tasks.findIndex((task) => {
-    return  task.name === inputId
-  })
-  console.log(inputId);
-  tasks.results[taskIndex].completed = true;
+  const idTask = parseInt(event.target.id);
   
+  const indexTask = tasks.findIndex((task) => {
+    return  task.id === idTask
+  })
+  
+  tasks[indexTask].completed = event.target.checked;
+  renderTask();
 }
-tasksList.addEventListener('click', handleClickCheckbox)
- 
+
+tasksList.addEventListener('click', handleClickCheckbox);
+
+//AGREGAR NUEVA TAREA
+let id = 170 
 const handleNewTask = (event) => {
   event.preventDefault();
   const newTask = {
+    id: id++,
     name: newTaskInput.value,
     completed: false,
   }
-  // console.log(tasks);
-  
+  tasks.push(newTask);
+  renderTask();
 }
+
+
   
 newTaskBtn.addEventListener('click', handleNewTask);
