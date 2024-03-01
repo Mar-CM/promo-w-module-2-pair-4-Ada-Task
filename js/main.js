@@ -28,6 +28,16 @@ if (tasksLocalStorage !== null) {
   tasks = tasksLocalStorage
   renderTask();
 } else {
+
+//   tasks = [
+//   { id: 170, name: 'Recoger setas en el campo', completed: true },
+//   { id: 171,name: 'Comprar pilas', completed: true },
+//   { id: 172, name: 'Poner una lavadora de blancos', completed: true },
+//   {
+//     id: 173, name: 'Aprender cómo se realizan las peticiones al servidor en JavaScript',
+//     completed: false,
+//   },
+// ];
   
   fetch(SERVER_URL)
     .then((response) => response.json())
@@ -40,17 +50,6 @@ if (tasksLocalStorage !== null) {
       console.error(error);
     });
 }
-
-// fetch(SERVER_URL)
-//   .then((response) => response.json())
-//   .then ((data) => {
-//     // console.log(data)
-
-//     tasks = data.results; // Estamos llamando al objeto al array del objeto que contiene la info que se llama results 
-
-//     renderTask();
-// });
-
 
 
 const handleClickCheckbox = (event) => {
