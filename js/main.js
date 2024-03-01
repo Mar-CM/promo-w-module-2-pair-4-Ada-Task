@@ -13,14 +13,30 @@ let tasks = [];
 const renderTask = () => {
   tasksList.innerHTML = ''; 
   for (const task of tasks){
-    if(task.completed === true){
-    tasksList.innerHTML += `
-    <li class="crossed task"><input id="${task.id}" type="checkbox" checked>${task.name}</li>
-    `} else {
-      tasksList.innerHTML += `
-      <li class="task"><input id="${task.id}" type="checkbox">${task.name}</li>
-      `
-    }
+
+    const liElement = document.createElement('li');
+    tasksList.appendChild(liElement);
+    liElement.classList.add('task');
+
+    const inputElement = document.createElement('input');
+    liElement.appendChild(inputElement);
+    inputElement.setAttribute('id', task.id);
+    inputElement.setAttribute('type', 'checkbox');
+
+    const nameElement = document.createTextNode(task.name);
+    liElement.appendChild(nameElement);
+
+    
+
+    // if(task.completed === true){
+      
+    // tasksList.innerHTML += `
+    // li class="crossed task"><input id="${task.id}" type="checkbox" checked>${task.name}</li><
+    // `} else {
+    //   tasksList.innerHTML += `
+    //   <li class="task"><input id="${task.id}" type="checkbox">${task.name}</li>
+    //   `
+    // }
 }
 }
 
