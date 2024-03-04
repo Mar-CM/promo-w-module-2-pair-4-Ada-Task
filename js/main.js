@@ -3,6 +3,9 @@
 const tasksList = document.querySelector ('.js-task-list');
 const newTaskInput = document.querySelector('.js-new-task');
 const newTaskBtn = document.querySelector('.js-new-task-btn');
+const searchBtn = document.querySelector('.js-search-btn');
+const searchInput = document.querySelector('.js-search-input');
+
 
 const GITHUB_USER = 'Mar-CM';
 const SERVER_URL = `https://dev.adalab.es/api/todo/${GITHUB_USER}`;
@@ -10,7 +13,7 @@ const tasksLocalStorage = JSON.parse(localStorage.getItem("tasks"));
 
 let tasks = [];
 
-const renderTask = () => {
+const renderTask = (tasks) => {
   tasksList.innerHTML = ''; 
   for (const task of tasks){
 
@@ -26,41 +29,28 @@ const renderTask = () => {
     const nameElement = document.createTextNode(task.name);
     liElement.appendChild(nameElement);
 
-    
+    if (task.completed === true){
+      liElement.classList.add('crossed');
+      inputElement.setAttribute('checked','');
+    } else {
+      liElement.classList.remove('crossed');
+      inputElement.removeAttribute('checked', '');
+    }
 
-    // if(task.completed === true){
-      
-    // tasksList.innerHTML += `
-    // li class="crossed task"><input id="${task.id}" type="checkbox" checked>${task.name}</li><
-    // `} else {
-    //   tasksList.innerHTML += `
-    //   <li class="task"><input id="${task.id}" type="checkbox">${task.name}</li>
-    //   `
-    // }
 }
 }
 
 if (tasksLocalStorage !== null) {
   tasks = tasksLocalStorage
-  renderTask();
+  console.log(tasks)
+  renderTask(tasks);
 } else {
-
-//   tasks = [
-//   { id: 170, name: 'Recoger setas en el campo', completed: true },
-//   { id: 171,name: 'Comprar pilas', completed: true },
-//   { id: 172, name: 'Poner una lavadora de blancos', completed: true },
-//   {
-//     id: 173, name: 'Aprender cómo se realizan las peticiones al servidor en JavaScript',
-//     completed: false,
-//   },
-// ];
-  
   fetch(SERVER_URL)
     .then((response) => response.json())
     .then((data) => {
       tasks = data.results;
       localStorage.setItem('tasks', JSON.stringify(tasks));
-      renderTask();
+      renderTask(tasks);
     })
     .catch((error) => {
       console.error(error);
@@ -78,7 +68,7 @@ const handleClickCheckbox = (event) => {
   tasks[indexTask].completed = event.target.checked;
   localStorage.setItem('tasks', JSON.stringify(tasks));
 
-  renderTask();
+  renderTask(tasks);
 }
 
 tasksList.addEventListener('click', handleClickCheckbox);
@@ -95,9 +85,18 @@ const handleNewTask = (event) => {
   tasks.push(newTask);
   localStorage.setItem('tasks', JSON.stringify(tasks));
 
-  renderTask();
+  renderTask(tasks);
+}
+ 
+newTaskBtn.addEventListener('click', handleNewTask);
+
+const handleSearch = (event) => {
+  event.preventDefault();
+  
+  const searchValue = searchInput.value;
+  const searchArray = tasks.filter(tasks => tasks.name.includes(searchValue))
+  console.log(searchArray)
+  renderTask(searchArray)
 }
 
-
-  
-newTaskBtn.addEventListener('click', handleNewTask);
+searchBtn.addEventListener('click', handleSearch)
